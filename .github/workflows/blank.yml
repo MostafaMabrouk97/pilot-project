@@ -19,13 +19,15 @@ jobs:
             const repo = context.repo.repo;
 
             const reviewerMap = {
-              "MostafaMabrouk97": ["MoStA09", "UserB"]
+              "MostaMabrouk97": ["MoStA09", "UserB"],
+              "JohnDoe": ["Reviewer1", "Reviewer2"],
+              "JaneDev": ["Reviewer3", "Reviewer4"]
             };
 
             const reviewers = reviewerMap[author];
             
             if (reviewers) {
-              console.log(Assigning reviewers ${reviewers.join(", ")} to PR from ${author});
+              console.log(`Assigning reviewers ${reviewers.join(", ")} to PR from ${author}`);
               await github.rest.pulls.requestReviewers({
                 owner,
                 repo,
@@ -33,5 +35,5 @@ jobs:
                 reviewers: reviewers
               });
             } else {
-              console.log(No reviewer mapping found for ${author}, skipping.);
+              console.log(`No reviewer mapping found for ${author}, skipping.`);
             }
