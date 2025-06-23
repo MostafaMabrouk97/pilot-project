@@ -1,0 +1,37 @@
+name: "Assign Custom Reviewers Based on Author"
+
+on:
+  pull_request:
+    types: [opened, reopened, ready_for_review]
+
+jobs:
+  assign-reviewers:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Assign reviewers based on author
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const author = context.payload.pull_request.user.login;
+            const prNumber = context.payload.pull_request.number;
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+
+            const reviewerMap = {
+              "MostafaMabrouk97": ["MoStA09", "UserB"]
+            };
+
+            const reviewers = reviewerMap[author];
+            
+            if (reviewers) {
+              console.log(Assigning reviewers ${reviewers.join(", ")} to PR from ${author});
+              await github.rest.pulls.requestReviewers({
+                owner,
+                repo,
+                pull_number: prNumber,
+                reviewers: reviewers
+              });
+            } else {
+              console.log(No reviewer mapping found for ${author}, skipping.);
+            }
