@@ -1,14 +1,15 @@
-name: "Assign Custom Reviewers Based on Author"
+name: "Auto Assign Reviewers by Author"
 
 on:
-  pull_request_target:
+  pull_request:
     types: [opened, reopened, ready_for_review]
 
 jobs:
   assign-reviewers:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Assign reviewers based on author
+      - name: Assign reviewers based on PR author
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -23,7 +24,7 @@ jobs:
             };
 
             const reviewers = reviewerMap[author];
-            
+
             if (reviewers) {
               console.log(`Assigning reviewers ${reviewers.join(", ")} to PR from ${author}`);
               await github.rest.pulls.requestReviewers({
