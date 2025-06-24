@@ -20,7 +20,8 @@ jobs:
             const repo = context.repo.repo;
 
             const reviewerMap = {
-              "MostafaMabrouk97": ["MoStA09"]
+              "MostafaMabrouk97": ["MoStA09"],
+              "MoStA09": ["MostafaMabrouk97"]
             };
 
             const reviewers = reviewerMap[author];
